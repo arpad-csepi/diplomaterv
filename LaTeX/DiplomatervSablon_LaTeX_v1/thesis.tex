@@ -23,7 +23,7 @@
 \newcommand{\vikkonzulensCVezeteknev}{}
 \newcommand{\vikkonzulensCKeresztnev}{}
 
-\newcommand{\vikcim}{Istio operator CLI fejlesztése, bővítése} % Cím
+\newcommand{\vikcim}{Istio operator CLI fejlesztése} % Cím
 \newcommand{\viktanszek}{\hit} % Tanszék
 \newcommand{\vikdoktipus}{\bsc} % Dokumentum típusa (\bsc vagy \msc)
 \newcommand{\vikmunkatipusat}{szakdolgozatot} % a "hallgató nyilatkozat" részhez: szakdolgozatot vagy diplomatervet
@@ -49,8 +49,8 @@
 
 %TODO These includes define guidelines -- remove these
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-\include{include/guideline}
-\include{include/project}
+% \include{include/guideline}
+% \include{include/project}
 
 \selectthesislanguage
 
@@ -60,6 +60,9 @@
 %\include{include/titlepage-tdk}	% TDK címlap
 %\include{include/titlepage-otdk}   % OTDK címlap
 
+%Project description page
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\includepdf[pages=-]{myfile.pdf}
 
 % Table of Contents
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,17 +80,14 @@
 \pagenumbering{arabic}
 
 %TODO import your own content
-% \include{content/introduction}
-% \include{content/latex-tools}
-% \include{content/thesis-format}
-% \include{content/template-usage}
 \include{content/introduction}
 \include{content/docker}
 \include{content/kubernetes}
 \include{content/istio}
 \include{content/golang}
+\include{content/github}
 \include{content/kli}
-\include{content/git}
+
 
 % Acknowledgements
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
