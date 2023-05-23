@@ -1,0 +1,1 @@
+- Mistyped first sentence in project description fix
