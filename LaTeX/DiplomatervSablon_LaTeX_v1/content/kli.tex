@@ -2,6 +2,59 @@
 \chapter{\kli}
 %----------------------------------------------------------------------------
 \section{Tervezés}
+A projekt tervezésekor kettő logikai részre osztottam a CLI-t. Front-end és back-end csomagokat külön fejlesztettem, melyeket végül egy projektbe integráltam be. A szándék az volt, hogy a back-end részt más által fejlesztett cli (avagy front-end) is tudja használni.
+\section{Model-View-Controller ismertetése}
+A MVC (Model-View-Controller) programtervezési mintát használtam a fejlesztéskor. Ez a modell segített abban, hogy külön válasszam a nézet réteget az adatrétegtől. A két réteg közötti kommunikációt egy vezérlői réteg oldja meg. Itt történik az adatok átadása, validálása az üzleti logika segítségével. Mivel a modulok a projetkben függetlenek egymástól köszönhetően az MVC alkalmazásának, így könnyű volt a későbbiekben változtatni és bővíteni az egyes modulok viselkedését. A tesztelhetőséget is nagyban megkönnyítette, mivel lehetőség adódott szimulálni (mock-olni) egy adott modult a másik modul tesztelésekor.
+
+A hátrányait figyelembe vettem, amikor döntöttem a projektem felépítéséről. A legtöbb feladatot a back-end végzi el, a vezérlői réteg kódja pedig MVC boilerplate kód.
 \section{Megvalósítás}
+\subsection{Front-end}
+Egy nyílt forráskodú könyvtárcsomag használatával felépítettem egy konzolos applikációt Go nyelv használatával. Az alkalmazás képes automatizáltan telepíteni és eltávolítani helm chart csomagokat a Kubernetes cluster-ből. Használata a következő flag-eken keresztül történik:
+\begin{itemize}
+    \item install, ahol az install után vár egy resource-t, amit telepít
+    \item uninstall, ahol az uninstall után vár egy resource-t, amit eltávolít
+\end{itemize}
+Használati példák:
+\begin{itemize}
+    \item kli install --resource istio-operator
+    \item kli uninstall --resource cluster-registry
+\end{itemize}
+Amikor meghívjuk az install flag-ek akkor a telepítés előtt ellenőrzés zajlik le, majd egy repository hozzáadás és frissítés. Ezután települ fel a helm csomag. A célja ennek a front-end csomagnak, hogy minimalizálja a függőségeit a külső moduloktól és csak a kubereflex back-end csomag funkcióira támaszkodjon.
+\subsection{Back-end}
+A kubereflex csomag felépítése modulárisra lett tervezve. A csomag fő modulja arra szolgál, hogy publikusan elérhetővé tegye az amúgy privát funkciókat az almodulokból. Emiatt a fő modul egyfajta kontroller szerepet tölt be. A külső modulok használata itt is minimalizálva van. Ideális esetben csak az almodulokat importálja be.
+\subsubsection*{kubereflex modul}
+Ez a back-end modul, melynek több almodulja van. Ebben a modulban található a üzleti logikai réteg, melynek segítségével történik meg az adatcsere.
+\subsubsection*{kubectl almodul}
+Ez az almodul felel az összes olyan funkcióért, amit a Kubernetes-ben kell végrehajtani. Ebben a csomagban van a névtér létrehozásához és már létrehozott névtér ellenőrzéséhez szükséges kódrészlet és majd itt lesz más csak kubernetes funkció is a jövőben, mely segít a cluster ellenőrzésében és a telepítési feltételek kialakításában, meglévő resource-ok konfigurálásában.
+\subsubsection*{helm almodul}
+Ez az almodul felel az összes olyan funkcióért, amit a Helm csomagkezelővel szeretnénk végrehajtani. Ilyen például az előre kész helm chart applikáció telepítése, törlése, repository hozzáadás, frissítés. Erre az almodulra fog a front-end nagyon sokat támaszkodni, mert az applikációk telepítése gyakran ezen az úton zajlik.
+\subsubsection*{io almodul}
+Ez az almodul felel minden fájl művelettel kapcsolatos funkciókért. Elsősorban a config fájlok betöltését teszi lehetővé a memóriába, de CRD leíró yaml fájl letöltésére is képes. Ennek az almodulnak a segítségével lehetséges a kontextus választó menü, mivel a kubernetes elérhető kontextusokat a konfigurációs fájlban vannak eltárolva.
+\section{Tesztelés}
+A csomagokhoz írtam teszt fájlokat, melyek minden egyes függvényt letesztelnek minta adatok segítségével. Ezek a tesztek sokat segítenek olyan hibák felderítésében, ami normális futtatáskor nem érzékelhető köszönhetően a teszt adatoknak.
+
+A teszteléshez szükséges volt létrehoznom pár teszt specifikus függvényt, mely segít a teszt adatokat és a teszt klienseket beállítani, mielőtt a tesztelni kívánt függvény meghívásra kerülne.
+
 \section{Kritikai elemzése}
+A cli telepítési folyamatának reprezentálása lehetne felhasználóbarátabb azzal, hogy látszódna az elvégzett feladatok és az összes feladatok aránya, a várható idő amíg tart a telepítés és hiba esetén dokumentációt az adott hiba okáról.
+Flag-ek kiosztása lehetne intuitívabb.
+Tesztelés lehetne jobb.
 \section{Továbbfejlesztési lehetőségek}
+Ennek a CLI programnak a továbbfejlesztését úgy képzelem el, hogy olyan funkciók kerülnek implementálásra, melyek segítenek a felhasználónak az Istio operátor telepítésében.
+\subsection{Operátor frissítése}
+Meglévő klaszter telepítésnél lehetőség adódna frissíteni a komponenseket egy adott verziószámra. Ez a verziószám lehetne a legfrissebb kiadás, de régebbi verziók is rendelkezésre állnának.
+\subsection{Log rendszer}
+Lehetőség lenne megadni flag-eken keresztül, hogy milyen fájlba írja ki a kimenetet. Előre meg lehetne határozni több szintű log-olási részletességet és lehetőség adódna a standard output-ra való kiírás minimalizálására. A log fájl jól struktúrált lenne, ami segítené visszanézhetővé tenni a telepítési folyamat sikerességét. A log fájlban sokkal több részletet lehetne leírni az adott folyamatról vagy annak hibájáról, míg ez a részletesség a standard output-on zavaró lehetne. 
+\subsection{Virtuálisgép integráció megvalósítása}
+Lehetőség lenne a klaszterhez hozzáadni létező virtuálisgépeket, ezzel segítve a átmigrálást a klaszterre. Vannak olyan workload-ok, melyek jobban teljesítenek monolitikus applikációként és negatív hatással lenne a mikroszolgáltatási struktúra.
+\subsection{Klaszterek létrehozása telepítés előtt}
+A felhasználónak lehetősége lenne létrehozni előre definiált vagy a program alapértelmezett értékeit használva egy vagy több klasztert. Ennek megvalósítása minden cloud provider-nél más és más, mert az authetntikálás, authorizálás és API-n keresztüli parancsok egyediek.
+\subsection{Automatizált post-install}
+Miután megtörtént a telepítés és attach, lehetőség lenne kiválasztani a menüből előre összeállított vagy egyedileg definiált deploymenteket és helm chart-ok telepítésére. A post-install konfigurációs leíró fájlt meg lehetne adni egy flag-el, így teljesen automatikusan futna le a teljes folyamat. A felkínált post-install lista olyan elemeket tartalmazna, melyek nagy segítséget nyújthatnak a klaszter további üzemeltetésében. 
+Előre üsszeállított deploymentekre példák:
+\begin{itemize}
+    \item Kubernetes dashboard
+    \item Prometheus monitoring system
+    \item Grafana dashboard
+    \item cert-manager TLS cert manager
+\end{itemize}

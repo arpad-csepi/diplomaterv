@@ -1,1 +1,3 @@
-- Mistyped first sentence in project description fix
+- Book bibliogarphy, must I need to include every page seperatly? Can I cite the whole section?
+- If I recreate the images, should I cite that also?
+- Need picture for git

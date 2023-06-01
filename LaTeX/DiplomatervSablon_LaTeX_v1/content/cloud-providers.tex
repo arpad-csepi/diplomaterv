@@ -1,8 +1,94 @@
 %----------------------------------------------------------------------------
 \chapter{\clouds}
 %----------------------------------------------------------------------------
-\section{Felhőalapú számítás modellje}
-\section{Felhőszolgáltatók}
-% \subsection{Amazon Web Services}
-% \subsection{Google Cloud Platform}
-% \subsection{Microsoft Azure}
+A felhőalapú számítástechnika (későbbiekben cloud-computing) a számítástechnikai erőforrások - beleértve a tárolást, a feldolgozási teljesítményt, az adatbázisokat, a hálózatépítést, az analitikát, a mesterséges intelligenciát és a szoftveralkalmazásokat - interneten (a felhőben) történő rendelkezésre bocsátása. Ezen erőforrások kiszervezésével a vállalatok hozzáférhetnek a számítási eszközökhöz, amelyekre szükségük van, amikor szükségük van rájuk, anélkül, hogy fizikai, helyben lévő IT-infrastruktúrát kellene vásárolniuk és fenntartaniuk. Ez rugalmas erőforrásokat, gyorsabb innovációt és méretgazdaságosságot biztosít. Sok vállalat számára a felhőre való áttérés közvetlenül kapcsolódik az adatok és az informatika modernizálásához.
+\cite{cloudComp}
+
+\section{A felhőalapú számítástechnika jellemzői}
+A cloud-computing előtt a szervezetek helyben vásároltak és tartottak fenn informatikai infrastruktúrát. Bár a felhőre való kezdeti áttérés nagy részét a költségmegtakarítás vezérelte, sok szervezet úgy találja, hogy a nyilvános, a privát vagy a hibrid felhőinfrastruktúra számos előnyt kínál.  
+
+Az agilis és DevOps-csapatok számára a felhőalapú számítástechnika lehetőséget nyújt a fejlesztési folyamat egyszerűsítésére és felgyorsítására. 
+
+Az alábbiakban felsoroljuk a felhőalapú számítástechnikát meghatározó jellemzőket.
+\cite{cloudComp}
+
+\begin{itemize}
+    \item Igény szerinti önkiszolgálás
+    \item Széles körű hálózati hozzáférés
+    \item Erőforrás-összevonás
+    \item Gyors rugalmasság
+    \item Mérhető szolgáltatás
+\end{itemize}
+
+\section{A felhőalapú telepítések típusai}
+A felhőalapú telepítéseknek három különböző típusa létezik. Mindegyiknek megvannak az egyedi előnyei, és a szervezetek gyakran többféle megoldás használatából is profitálnak.
+\cite{cloudComp}
+
+\subsection{Publikus felhő}
+A publikus felhők számítástechnikai erőforrásokat - szervereket, tárolókat, alkalmazásokat stb. -- nyújtanak az interneten keresztül egy felhőszolgáltatótól, például az AWS-től és a Microsoft Azure-tól. A felhőszolgáltatók birtokolják és üzemeltetik az összes hardvert, szoftvert és egyéb támogató infrastruktúrát.
+\cite{cloudComp}
+
+\subsection{Privát felhő}
+A privát felhő olyan számítási erőforrások, amelyek kizárólag egy szervezet számára vannak fenntartva. Fizikailag elhelyezkedhet a szervezet helyszíni adatközpontjában, vagy egy felhőszolgáltató által üzemeltetett tárhelyen. A privát felhő a nyilvános felhőknél magasabb szintű biztonságot és adatvédelmet nyújt azáltal, hogy dedikált erőforrásokat kínál a vállalatok számára.
+
+A privát felhő ügyfelei megkapják a nyilvános felhő elsődleges előnyeit, beleértve az önkiszolgálást, a skálázhatóságot és a rugalmasságot, de további előnyökkel, a további ellenőrzéssel és testreszabhatósággal. Ráadásul a privát felhők magasabb szintű biztonsággal és adatvédelemmel rendelkezhetnek, mivel a nyilvános forgalom számára nem hozzáférhető magánhálózatokon vannak elhelyezve.
+\cite{cloudComp}
+
+\subsection{Hibrid felhő}
+A hibrid felhők a privát és a nyilvános felhők (például a Red Hat által támogatott IBM Hybrid Cloud) kombinációja, amelyeket olyan technológiával kapcsolnak össze, amely lehetővé teszi az adatok és az alkalmazások együttes működését. Az érzékeny szolgáltatásokat és alkalmazásokat a biztonságos privát felhőben lehet tartani, míg a nyilvánosan elérhető webkiszolgálók és az ügyfelekkel szembenéző végpontok a nyilvános felhőben élhetnek. A legtöbb népszerű harmadik féltől származó felhőszolgáltató hibrid felhőmodellt kínál, amely lehetővé teszi a felhasználók számára, hogy igényeiknek megfelelően kombinálják a privát és a nyilvános felhőket. Ez nagyobb rugalmasságot biztosít a vállalkozások számára az alkalmazásuk egyedi infrastrukturális követelményeinek telepítésében.
+\cite{cloudComp}
+
+\section{Felhőalapú számítástechnikai szolgáltatások}
+A felhőalapú számítástechnika dinamikus tulajdonságai új, magasabb szintű szolgáltatások alapját képezik. Ezek a szolgáltatások nemcsak kiegészíthetik, hanem gyakran szükséges szolgáltatásokat is nyújthatnak az agilis és DevOps-csapatok számára.
+\cite{cloudComp}
+
+\subsection{Infrastruktúra mint szolgáltatás}
+Az infrastruktúra mint szolgáltatás (későbbiekben Infrastucture as a Service vagy IaaS) egy olyan alapvető felhőszolgáltatási réteg, amely lehetővé teszi a szervezetek számára, hogy informatikai infrastruktúrát - szervereket, tárolókat, hálózatokat, operációs rendszereket - béreljenek egy felhőszolgáltatótól. Az IaaS lehetővé teszi a felhasználók számára, hogy a nyers fizikai szerverraktárakból lefoglalják és rendelkezésre bocsássák a szükséges erőforrásokat. Ezenkívül az IaaS lehetővé teszi a felhasználók számára, hogy előre konfigurált gépeket foglaljanak speciális feladatokra, például terheléselosztókra, adatbázisokra, e-mail szerverekre, elosztott várólistákra.
+
+A DevOps-csapatok az IaaS-t olyan mögöttes platformként használhatják, amelyre egy DevOps-eszközláncot építhetnek, amely magában foglalhatja különböző harmadik féltől származó eszközök használatát.
+\cite{cloudComp}
+
+\subsection{Platform mint szolgáltatás}
+A platform mint szolgáltatás (későbbiekben Platform as a Service vagy PaaS) egy IaaS-re épülő felhőinfrastruktúra, amely erőforrásokat biztosít felhasználói szintű eszközök és alkalmazások létrehozásához. Az alapul szolgáló infrastruktúrát, beleértve a számítási, hálózati és tárolási erőforrásokat, valamint a fejlesztőeszközöket, az adatbázis-kezelő rendszereket és a köztes szoftvereket.
+
+A PaaS kihasználja az IaaS-t, hogy automatikusan kiossza a nyelvi alapú tech stack működtetéséhez szükséges erőforrásokat. Népszerű nyelvi tech stackek a Ruby On Rails, a Java Spring MVC, a MEAN és a JAM stackek. A PaaS-ügyfelek ezután egyszerűen feltölthetik az alkalmazáskódjukat, amely automatikusan települ a PaaS infrastruktúrájára. Ez egy újszerű és hatékony munkafolyamat, amely lehetővé teszi a csapatok számára, hogy teljes mértékben az adott üzleti alkalmazás kódjára koncentráljanak, és ne aggódjanak a tárhely és az infrastruktúra problémái miatt. A PaaS automatikusan kezeli az infrastruktúra skálázását és felügyeletét, hogy a megfigyelt forgalmi terhelésnek megfelelően növelje vagy csökkentse az erőforrásokat.
+\cite{cloudComp}
+
+\subsection{Szoftver mint szolgáltatás}
+A szoftver mint szolgáltatás (későbbiekben Software as a Service vagy SaaS) az interneten keresztül, igény szerint és jellemzően előfizetés alapján nyújt szoftveralkalmazásokat. A felhőszolgáltatók üzemeltetik és kezelik az alkalmazást, és szükség szerint gondoskodnak a szoftverfrissítésekről és a biztonsági javításokról. A SaaS-re példák a CRM-rendszerek, webmail-alkalmazások, termelékenységi eszközök, mint a Jira és a Confluence, elemzőeszközök, felügyeleti eszközök, csevegőalkalmazások és még sok más.
+\cite{cloudComp}
+
+\subsection{Funkció mint szolgáltatás}
+A szolgáltatásként nyújtott funkció (Function as a Service vagy FaaS) olyan felhőalapú számítástechnikai szolgáltatás, amely olyan platformot kínál, amelyen az ügyfelek alkalmazásokat fejleszthetnek, futtathatnak és kezelhetnek. Ezáltal a fejlesztőknek nem kell kiépíteniük és fenntartaniuk az alkalmazás fejlesztéséhez és elindításához szükséges infrastruktúrát. A felhőszolgáltatók felhőalapú erőforrásokat kínálnak, végrehajtanak egy kódblokkot, visszaadják az eredményt, majd megsemmisítik a felhasznált erőforrásokat.
+\cite{cloudComp}
+
+\section{A felhőalapú számítástechnika előnyei}
+\subsection*{Csökkentett költség}
+A felhőalapú erőforrásokat használó csapatoknak nem kell saját hardvereszközöket vásárolniuk. A hardverköltségeken túl a felhőszolgáltatók mindent megtesznek a hardverhasználat maximalizálása és optimalizálása érdekében. Ezáltal a hardver és a számítási erőforrások árucikké válnak, és a felhőszolgáltatók a legalacsonyabb végeredményért versenyeznek.
+\cite{cloudComp}
+
+\subsection*{Nagyobb skálázhatóság}
+Mivel a felhőalapú számítástechnika alapértelmezés szerint rugalmas, a szervezetek igény szerint méretezhetik az erőforrásokat. A felhőalapú számítástechnika automatikus skálázási funkciókat tesz lehetővé a csapatok számára. A felhőalkalmazások a forgalom kiugrásaira reagálva automatikusan képesek csökkenteni és növelni infrastrukturális erőforrásaikat.
+\cite{cloudComp}
+
+\subsection*{Nagyobb teljesítmény}
+A felhőalapú számítástechnika a legújabb és legnagyobb számítási erőforrásokat kínálja. A felhasználók hozzáférhetnek a legújabb, extrém, többmagos CPU-kkal felszerelt, nehéz párhuzamos feldolgozási feladatokra tervezett gépekhez. Emellett a nagy felhőszolgáltatók élvonalbeli GPU és TPU hardveres gépeket kínálnak az intenzív grafikai, mátrix- és mesterséges intelligencia feldolgozási feladatokhoz. Ezek a felhőszolgáltatók folyamatosan frissítik a legújabb processzortechnológiát.
+
+A nagyobb felhőszolgáltatók globálisan elosztott hardverhelyekkel rendelkeznek, amelyek a fizikai kapcsolódási helytől függően nagy teljesítményű kapcsolatokat biztosítanak. Emellett a felhőszolgáltatók globális tartalomszolgáltató hálózatokat kínálnak, amelyek a felhasználói kéréseket és tartalmakat hely szerint gyorsítótárba helyezik.
+\cite{cloudComp}
+
+\subsection*{Nagyobb végrehajtási sebesség}
+A felhőinfrastruktúrákat használó csapatok gyorsabban tudnak végrehajtani és értéket nyújtani ügyfeleiknek. Az agilis szoftvercsapatok kihasználhatják a felhőinfrastruktúrát, hogy gyorsan új virtuális gépeket indíthassanak az egyedi ötletek kikísérletezéséhez és validálásához, valamint automatizálhatják a pipeline tesztelési és telepítési fázisait.
+\cite{cloudComp}
+
+\subsection*{Nagyobb biztonság}
+A privát felhő tárhely elszigetelt tűzfalas infrastruktúrát kínál, amely javítja a biztonságot. Emellett a felhőszolgáltatók számos biztonsági mechanizmust és technológiát kínálnak a biztonságos alkalmazások kialakításához. A felhasználók hozzáférésének ellenőrzése fontos biztonsági szempont, és a legtöbb felhőszolgáltató kínál eszközöket a felhasználók hozzáférésének részletes korlátozására.
+\cite{cloudComp}
+
+\subsection*{Folyamatos integráció és szállítás}
+A folyamatos integráció és folyamatos szállítás (későbbiekben CI/CD) a DevOps-gyakorlók egyik legfontosabb gyakorlata, amely segít növelni a csapat sebességét és csökkenteni a piacra jutási időt. A felhőalapú CI/CD, például a Bitbucket Pipelines lehetővé teszi a csapatok számára, hogy automatikusan építsenek, teszteljenek és telepítsenek kódot anélkül, hogy a CI-infrastruktúra kezelésével vagy karbantartásával kellene foglalkozniuk. A Bitbucket Pipelines a Docker konténerekre támaszkodik a kiadási csővezeték elszigeteltségének és reprodukálhatóságának biztosítása érdekében. A csapatok hasonló parancsokat futtathatnak, mint egy helyi gépen, de minden egyes buildhez friss és reprodukálható beállítás minden előnyével.
+\cite{cloudComp}
+
+\subsection*{Átfogó felügyelet és incidenskezelés}
+A felhőalapú telepítések lehetővé teszik a csapatok számára, hogy eszközeiket a végponttól a végpontig összekapcsolják, megkönnyítve a csővezeték minden részének nyomon követését. Az átfogó felügyelet egy másik kulcsfontosságú képesség a DevOps-ot gyakorló szervezetek számára, mivel lehetővé teszi a problémák és incidensek gyorsabb kezelését. A felhőszolgáltatók megosztják a rendszer állapotára vonatkozó mérőszámokat, beleértve az alkalmazás és a szerver CPU-ját, memóriáját, a kérések számát, a hibaarányt, az átlagos válaszidőt stb. Például a terhelés figyelése sok virtuális gépen keresztül azt jelenti, hogy a csapatok több kapacitást tudnak hozzáadni, ha megnövekszik az igény, vagy a csapatok automatizálhatják a skálázást (fel/le) ezen mérőszámok alapján, hogy csökkentsék az emberi beavatkozást és a költségeket.
+\cite{cloudComp}
