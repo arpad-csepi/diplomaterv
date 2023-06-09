@@ -17,7 +17,7 @@ A tervezés utolsó fázisában került elő a program felépítésének kialak�
 Kettő logikai részre osztottam a CLI-t, ami kli és kubereflex csomagokként jelenik meg.
 Ennek célja a felület és logika kódjának szeparálása, így egyszerűbb fejlesztést és tesztelést tesz lehetővé.
 
-\section{Model-View-Controller ismertetése}
+\subsection*{Model-View-Controller ismertetése}
 A Model-View-Controller (későbbiekben MVC) programtervezési mintát használtam a fejlesztéskor ahogy az a \ref{kli-mvc} ábra is szemlélteti.
 Ez a model segített abban, hogy szétválasszam a nézet réteget az adatrétegtől.
 A két réteg közötti kommunikációt egy vezérlői réteg oldja meg.
@@ -83,7 +83,6 @@ A célja ennek a front-end csomagnak, hogy minimalizálja a függőségeit a kü
 A kubereflex csomag felépítése modulárisra lett tervezve.
 A csomag fő modulja arra szolgál, hogy publikusan elérhetővé tegye az amúgy privát funkciókat az almodulokból és egy kontroller szerepet töltsön be.
 Itt található a üzleti logika, az adatok átadása és a hibák kezelése is.
-
 A következő szekciókban az kubereflex almoduljait fogom bemutatni.
 
 \subsubsection*{helm almodul}
@@ -101,6 +100,8 @@ Ez az action kérés fog átadásra kerülni a helm kliensnek, amely azt feldolg
           \caption{Egyszerűsített diagram a helm chart telepítési folyamatáról.}
            \label{helm-simple-sequence}
 \end{figure}
+
+\newpage
 
 A következő metódusok funkcióinak összefoglalása:
 \begin{itemize}
@@ -260,6 +261,8 @@ A másik tesztelési megoldás amit alkalmaztam segíti egyszerűsíteni, gyors�
 Ehhez segítésgül hívtam a GitHub Actions szolgáltatást a GitHub oldalon.
 Ennek használatához létrehoztam egy .github nevezetű mappát a repository-ban és konfig fájlokkal töltöttem meg.
 A konfig fájlokban megadtam, hogy push típusú esemény hatására fussanak le a meghatározott lépések.
+
+\newpage
 
 A lépések feladatai sorrendben összefoglalva amiket a \ref{github-actions-run-log} ábra is mutat:
 \begin{itemize}
