@@ -79,23 +79,12 @@ Amikor meghívjuk az install flag-ek akkor a telepítés előtt ellenőrzés zaj
 Ezután települ fel a helm csomag.
 A célja ennek a front-end csomagnak, hogy minimalizálja a függőségeit a külső moduloktól és csak a kubereflex back-end csomag funkcióira támaszkodjon.
 
-\subsection{Back-end}
+\subsection{Controller bemutatása}
 A kubereflex csomag felépítése modulárisra lett tervezve.
-A csomag fő modulja arra szolgál, hogy publikusan elérhetővé tegye az amúgy privát funkciókat az almodulokból.
-Emiatt a fő modul egyfajta kontroller szerepet tölt be.
-A külső modulok használata itt is minimalizálva van. Ideális esetben csak az almodulokat importálja be.
+A csomag fő modulja arra szolgál, hogy publikusan elérhetővé tegye az amúgy privát funkciókat az almodulokból és egy kontroller szerepet töltsön be.
+Itt található a üzleti logika, az adatok átadása és a hibák kezelése is.
 
-\subsection{Kubernetes kliens}
-A kubereflex csomag felel a kubernetes, helm és fájl műveletek végrehajtásáért, mint például:
-\begin{itemize}
-    \item Kubernetes konfigurációs fájl beolvasáért és kliens létrehozásért.
-    \item Helm repository hozzáadásáért a rendszerhez és chartok telepítéséért.
-    \item CRD letöltéséért és alkalmazásáért.
-\end{itemize}
-
-\subsubsection*{kubereflex modul}
-Ez a back-end modul, melynek több almodulja van.
-Ebben a modulban található a üzleti logikai réteg, melynek segítségével történik meg az adatcsere.
+A következő szekciókban az kubereflex almoduljait fogom bemutatni.
 
 \subsubsection*{helm almodul}
 Ez az almodul felel az összes olyan funkcióért, amit a Helm csomagkezelővel szeretnénk végrehajtani.
@@ -124,7 +113,7 @@ A következő metódusok funkcióinak összefoglalása:
 
 \subsubsection*{kubectl almodul}
 Ez az almodul felel az összes olyan funkcióért, amit a Kubernetes API szerverrel közvetlen kommunikáción keresztül kell végrehajtani.
-Főbb feladatköre ennek az almodulnak az egyedi kubernetes REST kliensek létrehozása, névterek és deployment-ek ellenőrzése, erőforrások alkalmazása és multi-cluster funkcionalitás megvalósítása.
+Főbb feladatköre ennek az almodulnak az egyedi kubernetes REST kliensek létrehozása, erőforrások, névterek és deployment-ek létrehozása illetve ellenőrzése, erőforrások alkalmazása és multi-cluster funkcionalitás megvalósítása.
 
 \begin{figure}
     \centering
@@ -272,10 +261,32 @@ A lépések feladatai sorrendben összefoglalva amiket a \ref{github-actions-run
 \end{figure}
 
 \section{Kritikai elemzése}
-A cli telepítési folyamatának reprezentálása lehetne felhasználóbarátabb azzal, hogy látszódna az elvégzett feladatok és az összes feladatok aránya, a várható idő amíg tart a telepítés és hiba esetén dokumentációt az adott hiba okáról.
-Flag-ek kiosztása lehetne intuitívabb.
-Tesztelés lehetne jobb.
-Helm konfig fájl olvasás io csomagba kerülhetne.
+A program kritikus szemmel nézve kifogásolható több ponton is.
+Ez betudható a tervezésem pontatlanságának és a kivitelezési megoldásomban.
+Ezekre a pontatlanságokra fogok rávilágítani a következő pár szekcióban.
+
+\subsection*{Felhasználói felület}
+A felhasználói felületen megjelenő üzenetek sok helyet igényelnek és lehetnének informatívabbak az aktuális folyamat állapotáról.
+Jelenleg minden üzenetet új sorban ír ki a konzolos applikáció, mely hamar betelíti a konzolos ablakot és nehezen visszakereshetővé teszi az üzeneteket.
+Ezt a problémát lehet orvosolni, ha csoportosítom logikailag a folyamatok lépéseit és az egy csoportba tartozó lépéseket egy sorba írom ki, felülírva mindig az előző üzenetet. Ezzel sokkal kevesebb kiírás fog megtörténni és a folyamat végeredménye könnyen követhető lesz.
+
+Ezáltal, hogy kevesebb kiírás fog megmaradni a képernyőn megnyílik a lehetőség több információ megjelenítésére.
+Ezek az információk segítenének a felhasználónak a hibák felderítésében és a folyamat várható befejezési idejének meghatározásában.
+
+A flag-ek kiosztása nem eléggé intuitív és konzisztens. Kevés betű van használatban, így könnyen keverhetőek egymással a flag-ek.
+Több funkció esetében még nagyon problémává növi ki magát.
+
+\subsection*{Megvalósítás}
+A kód minőségén lehetne javítani töbféle képpen is, ezzel segítve a későbbi módosítások elvégzését.
+
+A függvények és változók elnevezése nem mindig teljesen reprezentatív.
+
+Helm konfig fájl beolvasásáért felelős kódrészlet nem az io csomagban található annak ellenére, hogy semmi függősége nincs a helm-hez.
+Ez a kódrészlet a program kezdeti fázisában lett megírva és nem lett átmozgatva az io csomagba.
+
+\subsection*{Tesztelés}
+A go tesztek implementálása sok várakozást tartalmaz a KinD cluster késleltetése miatt.
+
 
 \section{Továbbfejlesztési lehetőségek}
 Ennek a CLI programnak a továbbfejlesztését úgy képzelem el, hogy olyan funkciók kerülnek implementálásra, melyek segítenek a felhasználónak az Istio operátor telepítésében.
@@ -286,7 +297,8 @@ Ez a verziószám lehetne a legfrissebb kiadás, de régebbi verziók is rendelk
 
 \subsection{Log rendszer}
 Az automatizálás részeként kiegészíteném egy log rendszerrel a programomat, így felügyelet nélkül lehet hagyni a programot futtatás közben.
-Ehhez létrehoznék egy \texttt{-{}-}log (vagy röviden -l) flag-ek, melynek egy elérési útvonalat lehetne átadni, ahol létrehozna egy szöveges fájlt és beleírná a telepítési eseményeket. Előre meg lehetne határozni több szintű log-olási részletességet és lehetőség adódna a standard output-ra való kiírás minimalizálására is. A log fájl jól struktúrált lenne, ami segítené automatizálhatóan feldolgozni és visszanézhetővé tenni a telepítési folyamat sikerességét.
+Ehhez létrehoznék egy \texttt{-{}-}log (vagy röviden -l) flag-ek, melynek egy elérési útvonalat lehetne átadni, ahol létrehozna egy szöveges fájlt és beleírná a telepítési eseményeket. Előre meg lehetne határozni több szintű log-olási részletességet és lehetőség adódna a standard output-ra való kiírás minimalizálására is.
+A log fájl jól struktúrált lenne, ami segítené automatizálhatóan feldolgozni és visszanézhetővé tenni a telepítési folyamat sikerességét.
 Előnye fájlba log-olásnak, hogy sokkal több részletet lehetne leírni az adott folyamatról vagy annak hibájáról, míg ez a részletesség a standard output-on zavaró lehet.
 
 Implementálását úgy oldanám meg, hogy létrehoznék egy saját kiíró függvényt (nevezzük printer-nek) az io csomagban.
@@ -318,10 +330,10 @@ Ebből az adatokat kiolvasva létre lehet hozni egy klienst, mely az API kérés
 Miután megtörtént a telepítés és attach, lehetőség lenne kiválasztani a menüből előre összeállított vagy egyedileg definiált deploymenteket és helm chart-ok telepítésére.
 A post-install konfigurációs leíró fájlt meg lehetne adni egy flag-el, így teljesen automatikusan futna le a teljes folyamat.
 A felkínált post-install lista olyan elemeket tartalmazna, melyek nagy segítséget nyújthatnak a klaszter további üzemeltetésében.
-Előre üsszeállított deploymentekre példák:
+Előre összeállított deploymentekre példák:
 \begin{itemize}
-    \item Kubernetes dashboard
-    \item Prometheus monitoring system
-    \item Grafana dashboard
-    \item cert-manager TLS cert manager
+    \item Kubernetes dashboard telepítése.
+    \item Prometheus monitorozó rendszer beállítása.
+    \item Grafana dashboard telepítése.
+    \item cert-manager TLS cert manager konfigurálása.
 \end{itemize}
