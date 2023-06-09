@@ -211,9 +211,32 @@ Ennek egy minta konfigurációja látható a \ref{sample-secret-config} ábrán.
     \label{sample-secret-config}
 \end{figure}
 
+Amikor kettő cluster-t összekapcsolja a programom, akkor a Secret és Cluster erőforrásokat másolom át egyik cluster-ből a másikba.
+Az operátor észleli a változást és megpróbálja a kapcsolatot létrehozni.
+
 \section{Multi-cluster funkció működése}
+\subsection*{Active-passive mód}
+A multi-cluster megoldást nyújt azokra az esetekre, mikor több cluster-t egyszerre szeretnénk konfigurálni és megosztani az erőforrásaikat egymás között.
+Az Istio control plane létrehoz egy publikus átjárót (ahogy az látható a \ref{active-passive} ábrán is), melyen keresztül tud a másik cluster szolgáltatásai adatokat küldeni az active cluster-nek.
+Mivel az active cluster ismeri a passive cluster API szerver címét, így tud kéréseket küldeni arra, ezzel megvalósítva olyan funkciókat mint például erőforrás szinkronizálás és konfigurálás.
+\begin{figure}[ht]
+  \centering
+       \includegraphics[width=1.0\textwidth]{figures/kli/active-passive.png}
+        \caption{Istio active-passive mód ábrázolása \cite{istioap}.}
+         \label{active-passive}
+\end{figure}
 
+\subsection*{Active-active mód}
+Az active-active módban mindkettő cluster rendelkezik Istio Control Plane resource-al.
+Mivel ebben az esetben mindegyik cluster-en van ICP és ismeri a másik cluster API végpontját, így nincs szükség egy átjáró létrehozására (ahogy látható a \ref{active-active} ábrán).
+Ez lehetővé teszi, hogy bármelyik cluster-en lévő módosítás szinkronizálva legyen a másik cluster-re.
 
+\begin{figure}[ht]
+  \centering
+       \includegraphics[width=1.0\textwidth]{figures/kli/active-active.png}
+        \caption{Istio active-active mód ábrázolása \cite{istioaa}.}
+         \label{active-active}
+\end{figure}
 
 \section{Tesztelés}
 A csomagokhoz írtam teszt fájlokat, melyek minden egyes függvényt letesztelnek minta adatok segítségével.
@@ -356,8 +379,6 @@ A felhasználónak lehetősége lenne létrehozni előre definiált cluster-eket
 Ez a konfigurációs fájl leírná a cluster szolgáltatóját, az azonosításhoz szükséges adatokat, a cluster méretét és fajtáját.
 Egy \texttt{-{}-}setup (vagy röviden -s) flag bevezetését követően át lehet adni a programnak az elérési útvonalát a konfigurációs fájlnak.
 Ebből az adatokat kiolvasva létre lehet hozni egy klienst, mely az API kéréseket fogja létrehozni.
-
-\newpage
 
 \subsection{Automatizált post-install}
 Miután megtörtént a telepítés és attach, lehetőség lenne kiválasztani a menüből előre összeállított vagy egyedileg definiált deploymenteket és helm chart-ok telepítésére.
