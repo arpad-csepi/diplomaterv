@@ -2,21 +2,32 @@
 \chapter{\bevezetes}
 %----------------------------------------------------------------------------
 
-A mai rohanó világban a modern alkalmazások egyre összetettebbé válnak. Ezek a mikroszolgáltatások egy elosztott architektúrára épülnek, amelyek különböző platformokon és környezetekben futnak. Ez a komplexitás olyan kihívásokat hoz magával, mint a szolgáltatások közötti kommunikáció kezelése, biztonságának biztosítása, és az egyes szolgáltatások teljesítményének felügyelete. Az Istio service mesh termék ezeket a kihívásokat segíti áthidalni olyan funkciókkal amelyek egyszerűsítik a mikroszolgáltatás-alapú alkalmazások és klaszterek kezelését. Cisco által fejlesztett Istio operátor Calisti Service Mesh Manager termék része, mely felhasználóbarát telepítést, klaszter menedzselést és megfigyelést tesz lehetővé.
+A mai rohanó világban a modern alkalmazások egyre összetettebbé válnak, így felosztjuk kisebb részekre.
+Ezek a mikroszolgáltatások egy elosztott architektúrára épülnek, amelyek különböző platformokon és környezetekben futnak.
+Ez a komplexitás olyan kihívásokat hoz magával, mint a szolgáltatások közötti kommunikáció kezelése, biztonságának biztosítása és az egyes szolgáltatások teljesítményének felügyelete.
+Az Istio Service Mesh termék ezeket a kihívásokat segíti áthidalni olyan funkciókkal amelyek egyszerűsítik a mikroszolgáltatás-alapú alkalmazások és klaszterek kezelését.
 
-A Calisti Service Mesh Manager fizetős termék mellé kínálok egy ingyenes és teljesen nyílt forráskódú alternatívát. Az én általam fejlesztett program ugyanazt az Istio operátort használva implementál bizonyos funkciókat, mellyel felhasználóbarát és automatizált lehetőséget kínálok telepítésre, törlésre, és több klaszter összekapcsolására. A célom ezzel a programmal, hogy több emberhez eljusson a mikroszolgáltatás alapú szoftveres megoldások és képesek legyenek további fejlesztésekkel bővíteni és testreszabni azt.
+Cisco által fejlesztett Istio operátor Calisti Service Mesh Manager (későbbiekben Calisti) termék része, mely felhasználóbarát telepítést, klaszter menedzselést és megfigyelést tesz lehetővé egy modern webes felületen. A Calisti több komponensből álló összetett szolgáltatás, így működésének megértése időigényes és megterhelő lehet a felhő technológia iránt érdeklődő egyéneknek.
 
-A szakdolgozat fejezeteit ajánlott sorban elolvasni, mert a fejezetek támaszkodnak előző fejezetekben leírt technológiákra. A témakörök amikről szó lesz röviden összefoglalva:
+A Calisti Service Mesh Manager fizetős termék mellé kínálok egy ingyenes és teljesen nyílt forráskódú alternatívát.
+Az általam fejlesztett program ugyanazt az Istio operátort használva implementál bizonyos funkciókat, mellyel felhasználóbarát és automatizált lehetőségeket kínálok telepítésre, törlésre, és több klaszter összekapcsolására.
+A célom ezzel a programmal, hogy több emberhez eljusson a mikroszolgáltatás alapú szoftveres megoldások és képesek legyenek további fejlesztésekkel bővíteni és testreszabni azt.
+
+\newpage
+
+A szakdolgozat fejezeteit ajánlott sorrendben elolvasni, mert a fejezetek támaszkodnak előző fejezetekben leírt információkra.
+Ezek technológiák ismerete szükséges lesz későbbiekben a szakdolgozat feladatának megértéséhez.
+A témakörök amikről szó lesz röviden összefoglalva:
 \begin{itemize}
-    \item Konténerek használatának előnyei mikroszolgáltatások üzemeltetésekor
-    \item A népszerű Docker platform megismertetése, konténerképek rétegeinek bemutatása
-    \item Kubernetes alkalmazéskezelő működésének illusztrálása, master-slave architektúra és a különböző típusú erőforrások leírása
-    \item Kubernetes in Docker milyen lehetőségeket kínál ha valaki lokális gépen szeretne Kubernetes klasztert létrehozni.
-    \item Helm csomagkezelő ki lesz fejtve miért is nagyon hasznos egy jó csomagkezelő a Kubernetes klaszterünknek.
-    \item Service Mesh fejezetben az Istio szolgáltatásháló megoldásról lesz szó, ami segít menedzselni a mikroszolgáltatásainkat akár több klaszteren keresztül is.
-    \item Boncolva lesznek a felhő telepítésének típusai és a szolgáltatások típusai, amin futni fognak majd a mikroszolgáltatások a kubernetes segítségével.
-    \item A Go programozási nyelv ismertetésre kerül, mivel ez a legelterjetebb programozási nyelv a mikroszolgáltatások fejlesztéséhez és mivel ebben készült az én szakdolgozatom munkája is.
-    \item Verziókezelő rendszerek bemutatásra kerülnek, mivel a legjobb megoldás a piacon a nyílt forráskodú szoftverek fájlainak követésére.
-    \item A GitHub Actions tesztelési lehetőség ismertetve lesz példával illusztrálva.
-    \item Miután ez a sok technológiai ismeret át lett adva szó lesz a fejlesztett program felépítésének tervezéséről, kivitelezéséről, teszteléséről, kritikájáról és további fejlesztési potenciáljairól.
+    \item Konténerek előnyeinek ismertetése mikroszolgáltatások üzemeltetésekor.
+    \item A népszerű Docker platform megismertetése, konténerképek rétegeinek bemutatása.
+    \item Kubernetes alkalmazéskezelő működésének illusztrálása, master-slave architektúra és a különböző típusú erőforrások leírásával.
+    \item Kubernetes in Docker lehetőségeinek bemutatása.
+    \item Helm csomagkezelő használatának kifejtése.
+    \item Istio Service Mesh való mikroszolgáltatások menedzselésének megismertetése.
+    \item Felhő telepítésének típusai és a szolgáltatások típusainak körbejárása.
+    \item A Go programozási nyelv ismertetése.
+    \item Verziókezelő rendszerek bemutatása.
+    \item A GitHub Actions leírása példával illusztrálva.
+    \item A fejlesztett program felépítésének tervezéséről, kivitelezéséről, teszteléséről, kritikájáról és további fejlesztési potenciáljairól való dokumentáció.
 \end{itemize}
