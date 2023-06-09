@@ -115,71 +115,6 @@ A következő metódusok funkcióinak összefoglalása:
 Ez az almodul felel az összes olyan funkcióért, amit a Kubernetes API szerverrel közvetlen kommunikáción keresztül kell végrehajtani.
 Főbb feladatköre ennek az almodulnak az egyedi kubernetes REST kliensek létrehozása, erőforrások, névterek és deployment-ek létrehozása illetve ellenőrzése, erőforrások alkalmazása és multi-cluster funkcionalitás megvalósítása.
 
-\begin{figure}
-    \centering
-    \begin{minipage}{\linewidth}
-        \begin{lstlisting}
-            apiVersion: servicemesh.cisco.com/v1alpha1
-            kind: IstioControlPlane
-            metadata:
-              annotations:
-                controlplane.istio.servicemesh.cisco.com/namespace-injection-source: "true"
-              generation: 1
-              name: icp-v115x
-              namespace: istio-system
-            spec:
-              meshExpansion:
-                enabled: true
-              mode: ACTIVE
-              networkName: network1
-              version: 1.15.3
-            ...
-        \end{lstlisting}
-    \end{minipage}
-    \caption{A IstioControlPlane típusú egyedi erőforrás konfigurációs fájl melyet telepítési paranccsal átadtam.}
-      \label{sample-icp-config}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \begin{minipage}{\linewidth}
-      \begin{lstlisting}
-        apiVersion: clusterregistry.k8s.cisco.com/v1alpha1
-        kind: Cluster
-        metadata:
-          name: demo-active
-        spec:
-          authInfo:
-            secretRef:
-              name: demo-active
-              namespace: cluster-registry
-          clusterID: f21b9aba-042a-4b88-bf8e-c7853e9e4e08
-          kubernetesApiEndpoints:
-          - serverAddress: 34.73.19.80
-        ...
-      \end{lstlisting}
-      \end{minipage}
-      \caption{Egy Cluster típusú egyéni erőforrás konfigurációs fájl részlete.}
-      \label{sample-cluster-config}
-  \end{figure}
-
-\begin{figure}
-    \centering
-    \begin{minipage}{\linewidth}
-        \begin{lstlisting}
-            apiVersion: v1
-            kubeconfig: YXB...
-            kind: Secret
-            name: demo-active
-            namespace: cluster-registry
-            type: k8s.cisco.com/cluster-registry-secret
-            ...
-        \end{lstlisting}
-    \end{minipage}
-    \caption{Egy Secret típusú erőforrás konfigurációs fájl részlete melyre hivatkozik a Cluster erőforrás.}
-      \label{sample-secret-config}
-\end{figure}
-
 \subsubsection*{io almodul}
 Ez az almodul felel minden fájl művelettel kapcsolatos funkciókért.
 Elsősorban a config fájlok betöltését teszi lehetővé a memóriába, de CRD leíró yaml fájl letöltésére is képes.
@@ -187,7 +122,98 @@ Ennek az almodulnak a segítségével lehetséges a kontextus választó menü, 
 
 \section{Telepítés és törlés funkció működése}
 
+\subsection*{Telepítés menete}
+A telepítési parancs lefuttatásakor létrejön egy kubernetes kliens és egy helm kliens.
+A helm kliens segítségével hozzáadom a repository-kat a lokális rendszerhez, melyből telepítésre fog kerülni kettő chart.
+Az egyik chart az Istio operator telepítéséért felel, melynek paramétereként átadásra kerül a konfigurációs fájlja.
+Ez a konfigurációs fájl írja le, hogy milyen típusú erőforrás, milyen névvel és melyik névtérben legyen létrehozva, a verziószámát és a módját.
+Ebből látható egy példa fájl részlete a \ref{sample-icp-config} ábrán.
+
+A chart-ok telepítése után a kubernetes kliens segítségével ellenőrzöm a resource-ok rendelkezésre álló állapotukat, ha a felhasználó használja az ehhez kialakított flag-et.
+
+\begin{figure}
+  \centering
+  \begin{minipage}{\linewidth}
+      \begin{lstlisting}
+          apiVersion: servicemesh.cisco.com/v1alpha1
+          kind: IstioControlPlane
+          metadata:
+            annotations:
+              controlplane.istio.servicemesh.cisco.com/namespace-injection-source: "true"
+            generation: 1
+            name: icp-v115x
+            namespace: istio-system
+          spec:
+            meshExpansion:
+              enabled: true
+            mode: ACTIVE
+            networkName: network1
+            version: 1.15.3
+          ...
+      \end{lstlisting}
+  \end{minipage}
+  \caption{A IstioControlPlane típusú egyedi erőforrás konfigurációs fájl melyet telepítési paranccsal átadtam.}
+    \label{sample-icp-config}
+\end{figure}
+
+Kétféle mód létezik ehhez az Istio operator-hoz. Az egyik az aktív (későbbiekben active) a másik a passzív (későbbiekben passive).
+Az active és passive mód különbsége abban mutatkozik meg, hogy az active módban létre lesz hozva egy Istio Control Plane (későbbiekben ICP) resource, míg a passive módban nem.
+Ez az ICP felel az Istio specifikus erőforrások kezelésében, így szükséges egy cluster-es megoldásokban a telepítése.
+Multi-cluster megoldásnál van lehetőségünk a másodlagos cluster-nél kihagyni az ICP telepítését a passive mód segítségével.
+
+A multi-cluster összecsatolási megoldásom a cluster registry chart-on alapszik.
+Miután feltelepült az Istio operator mindkettő cluster-re, feltelepítem a cluster registry chart-ot is.
+Ez a chart biztosít pár CRD-t, mely hasznos a cluster azonosítására és állapotának követésére.
+
+Mikor feltelepül a cluster registry létrejön egy Cluster típusú resource, mely tartalmazza a cluster nevét és azonosítóját, secret-ének nevét és névterét, az API végpont publikus IP címét (ahogy látható a \ref{sample-cluster-config} ábrán is).
+
+\begin{figure}
+  \centering
+  \begin{minipage}{\linewidth}
+    \begin{lstlisting}
+      apiVersion: clusterregistry.k8s.cisco.com/v1alpha1
+      kind: Cluster
+      metadata:
+        name: demo-active
+      spec:
+        authInfo:
+          secretRef:
+            name: demo-active
+            namespace: cluster-registry
+        clusterID: f21b9aba-042a-4b88-bf8e-c7853e9e4e08
+        kubernetesApiEndpoints:
+        - serverAddress: 34.73.19.80
+      ...
+    \end{lstlisting}
+    \end{minipage}
+    \caption{Egy Cluster típusú egyéni erőforrás konfigurációs fájl részlete.}
+    \label{sample-cluster-config}
+\end{figure}
+
+A cluster registry legenerál egy Secret típusú resource-ot is, mely minden cluster-en kiptográfiailag van generálva.
+Ennek a Secret-nek van neve, névtere és benne található meg a kubeconfig érték is, mely szükséges az API végponti kommunikációhoz.
+Ennek egy minta konfigurációja látható a \ref{sample-secret-config} ábrán.
+
+\begin{figure}
+  \centering
+  \begin{minipage}{\linewidth}
+      \begin{lstlisting}
+          apiVersion: v1
+          kubeconfig: YXB...
+          kind: Secret
+          name: demo-active
+          namespace: cluster-registry
+          type: k8s.cisco.com/cluster-registry-secret
+          ...
+      \end{lstlisting}
+  \end{minipage}
+  \caption{Egy Secret típusú erőforrás konfigurációs fájl részlete melyre hivatkozik a Cluster erőforrás.}
+    \label{sample-secret-config}
+\end{figure}
+
 \section{Multi-cluster funkció működése}
+
+
 
 \section{Tesztelés}
 A csomagokhoz írtam teszt fájlokat, melyek minden egyes függvényt letesztelnek minta adatok segítségével.
@@ -277,23 +303,28 @@ A flag-ek kiosztása nem eléggé intuitív és konzisztens. Kevés betű van ha
 Több funkció esetében még nagyon problémává növi ki magát.
 
 \subsection*{Megvalósítás}
-A kód minőségén lehetne javítani töbféle képpen is, ezzel segítve a későbbi módosítások elvégzését.
-
-A függvények és változók elnevezése nem mindig teljesen reprezentatív.
+A kód minőségén lehetne javítani többféle képpen is, ezzel segítve a későbbi módosítások elvégzését.
+A függvények és változók elnevezése nem mindig teljesen reprezentatív, a kódolási stílus változó.
+Bár ezek többsége ízlés kérdése is, érdemes használnom a későbbiekben go linter-eket, melyek segítenek elemezni a kódot és akár javítási javaslatot is tesznek. Ezzel könnyedén elérhetővé válik az egységes kód, mely akkor is az marad, mikor több ember dolgozik rajta. 
 
 Helm konfig fájl beolvasásáért felelős kódrészlet nem az io csomagban található annak ellenére, hogy semmi függősége nincs a helm-hez.
 Ez a kódrészlet a program kezdeti fázisában lett megírva és nem lett átmozgatva az io csomagba.
-
-\subsection*{Tesztelés}
-A go tesztek implementálása sok várakozást tartalmaz a KinD cluster késleltetése miatt.
-
 
 \section{Továbbfejlesztési lehetőségek}
 Ennek a CLI programnak a továbbfejlesztését úgy képzelem el, hogy olyan funkciók kerülnek implementálásra, melyek segítenek a felhasználónak az Istio operátor telepítésében.
 
 \subsection{Operátor frissítése}
+Az Istio operátor telepítése után nincs mód annak frissítésére a programom keresztül.
+Ehhez segítségül kell hívni a helm parancsot, melyet a felhasználó lehet, hogy nem ismer.
+Mivel a programom felhasználóbarát megoldásokat kínál, így magától adódik ennek a funckiónak az automatizálása.
 Meglévő klaszter telepítésnél lehetőség adódna frissíteni a komponenseket egy adott verziószámra.
 Ez a verziószám lehetne a legfrissebb kiadás, de régebbi verziók is rendelkezésre állnának.
+
+A megvalósítása ennek egyszerű feladat, ugyanis már implementálva van egy helm kliens mely feltelepíti az istio operátort.
+Ennek a kliensnek van chart frissítési funkciója is, így csak azt kell meghívni a kódomban.
+Ehhez a funkcióhoz be kell vezetnem egy új parancsot (nevezzük upgrade-nek).
+Az upgrade parancsnak flag-eken keresztül meg kellene adni, hogy melyik resource-t szeretnénk frissíteni.
+Ezután egy listából kiválaszthatjuk a telepíteni kívánt verziót. Ezeket a verziószámokat egy webes kérés segítségével lekérdezhető az internetről.
 
 \subsection{Log rendszer}
 Az automatizálás részeként kiegészíteném egy log rendszerrel a programomat, így felügyelet nélkül lehet hagyni a programot futtatás közben.
@@ -325,6 +356,8 @@ A felhasználónak lehetősége lenne létrehozni előre definiált cluster-eket
 Ez a konfigurációs fájl leírná a cluster szolgáltatóját, az azonosításhoz szükséges adatokat, a cluster méretét és fajtáját.
 Egy \texttt{-{}-}setup (vagy röviden -s) flag bevezetését követően át lehet adni a programnak az elérési útvonalát a konfigurációs fájlnak.
 Ebből az adatokat kiolvasva létre lehet hozni egy klienst, mely az API kéréseket fogja létrehozni.
+
+\newpage
 
 \subsection{Automatizált post-install}
 Miután megtörtént a telepítés és attach, lehetőség lenne kiválasztani a menüből előre összeállított vagy egyedileg definiált deploymenteket és helm chart-ok telepítésére.
