@@ -38,10 +38,10 @@ Az Istio control plane a Kubernetes-en fut, és az adott cluster-ben telepített
 A közreműködők, partnerek, integrációk és disztribútorok nagy ökoszisztémája az Istio-t a legkülönfélébb helyzetekre bővíti és hasznosítja.
 Az Istio-t telepítheti saját maga, vagy számos gyártó rendelkezik olyan termékekkel, amelyek integrálják az Istio-t és kezelik azt a felhasználó számára.
 
-Az Istio két komponensből áll: az adatsíkból (későbbiekben data plane) és a vezérlési síkból (későbbiekben control plane).
+Az Istio két komponensből áll: az adatsíkból (későbbiekben data plane) és a vezérlési síkból (későbbiekben control plane), ahogy a \ref{operator-overview} ábrán is látható.
 A data plane a szolgáltatások közötti kommunikációt jelenti.
 Service Mesh nélkül a hálózat nem érti az átküldött forgalmat, és nem tud döntéseket hozni az alapján, hogy milyen típusú forgalomról van szó, vagy hogy kitől vagy kihez érkezik.
-A Service Mesh egy proxy segítségével elfogja az összes hálózati forgalmat, és a felhasználó által beállított konfiguráció alapján lehetővé teszi az alkalmazásfüggő funkciók széles körét.
+A Service Mesh egy proxy segítségével elfogja az összes hálózati forgalmat, és a felhasználó által beállított konfiguráció alapján lehetővé teszi az alkalmazásfüggő funkciók széles körét (lásd \ref{service-mesh} ábrán).
 Az Envoy proxy minden olyan szolgáltatással együtt kerül telepítésre, amelyet a cluster-ben elindít, vagy a virtuális gépeken futó szolgáltatások mellett fut.
 A control plane átveszi a kívánt konfigurációt és a szolgáltatásokról alkotott nézetét, és dinamikusan programozza a proxy-kiszolgálókat, frissítve azokat, amint a szabályok vagy a környezet változik \cite{istioSM}.
 
@@ -88,8 +88,8 @@ Többfelhős környezetet is létrehozhat különböző felhőkben akár külön
 
 \begin{figure}[ht]
     \centering
-         \includegraphics[width=1.0\textwidth]{figures/istio/multicluster.png}
-          \caption{CSERE Multi-cluster architektúra bemutatása \cite{multicluster}.}
+         \includegraphics[width=1.0\textwidth]{figures/istio/multicluster-mod.png}
+          \caption{Multi-cluster architektúra bemutatása \cite{multicluster}.}
            \label{multi-cluster}
 \end{figure}
 

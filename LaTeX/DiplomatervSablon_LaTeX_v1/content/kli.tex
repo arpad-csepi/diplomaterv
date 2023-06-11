@@ -17,6 +17,8 @@ A tervezés utolsó fázisában került elő a program felépítésének kialak�
 Kettő logikai részre osztottam a CLI-t, ami kli és kubereflex csomagokként jelenik meg.
 Ennek célja a felület és logika kódjának szeparálása, így egyszerűbb fejlesztést és tesztelést tesz lehetővé.
 
+\newpage
+
 \subsection*{Model-View-Controller ismertetése}
 A Model-View-Controller (későbbiekben MVC) programtervezési mintát használtam a fejlesztéskor ahogy az a \ref{kli-mvc} ábra is szemlélteti.
 Ez a model segített abban, hogy szétválasszam a nézet réteget az adatrétegtől.
@@ -42,8 +44,6 @@ Ez a generált alkalmazás funkció egy könnyen érthető és bővíthető váz
 Használata egyszerű volt, mivel a go csomagkezelővel könnyedén telepíthető a cobra.
 A telepítés után a cobra init parancs legenerálta a váz kódot és a cobra add parancs adta hozzá a parancsokat ehhez a vázhoz.
 Ezt a kiindulási kód csomagot neveztem el kli-nek.
-
-\newpage
 
 A kli csomag felel a felhasználói felület kezeléséért mint például:
 \begin{itemize}
@@ -157,6 +157,8 @@ A chart-ok telepítése után a kubernetes kliens segítségével ellenőrzöm a
     \label{sample-icp-config}
 \end{figure}
 
+\newpage
+
 Kétféle mód létezik ehhez az Istio operator-hoz. Az egyik az aktív (későbbiekben active) a másik a passzív (későbbiekben passive).
 Az active és passive mód különbsége abban mutatkozik meg, hogy az active módban létre lesz hozva egy Istio Control Plane (későbbiekben ICP) resource, míg a passive módban nem.
 Ez az ICP felel az Istio specifikus erőforrások kezelésében, így szükséges egy cluster-es megoldásokban a telepítése.
@@ -244,6 +246,8 @@ A csomagokhoz írtam teszt fájlokat, melyek minden egyes függvényt leteszteln
 Ezek a tesztek sokat segítenek olyan hibák felderítésében, ami normális futtatáskor nem lenne érzékelhető.
 
 A teszteléshez szükséges volt létrehoznom pár teszt specifikus függvényt, mely segít a teszt adatokat és a teszt klienseket beállítani, mielőtt a tesztelni kívánt függvény meghívásra kerülne. Minden teszt függvény sikeresen lefut és az elvárt viselkedést produkálja.
+
+\newpage
 
 Ahogy az a \ref{test-code-snippet} ábrán is látható, a teszt meghívja a createTestClient(), resetCluster() és setupCluster() függvényeket, melyekkel előkészíti a cluster állapotát a teszt futtatásához.
 Ezután elvégzi a szükséges teszt adatok elhelyezését és várakozik amíg rendelkezésre nem áll az resource a cluster-en.
@@ -338,6 +342,8 @@ Ez a kódrészlet a program kezdeti fázisában lett megírva és nem lett átmo
 
 \section{Továbbfejlesztési lehetőségek}
 Ennek a CLI programnak a továbbfejlesztését úgy képzelem el, hogy olyan funkciók kerülnek implementálásra, melyek segítenek a felhasználónak az Istio operátor telepítésében.
+
+\newpage
 
 \subsection{Operátor frissítése}
 Az Istio operátor telepítése után nincs mód annak frissítésére a programom keresztül.

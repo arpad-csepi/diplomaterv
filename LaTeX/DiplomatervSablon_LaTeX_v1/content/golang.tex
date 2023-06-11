@@ -17,6 +17,8 @@ Mivel a Go egy nemrégiben kifejlesztett magas szintű nyelv, a visszatekintés 
 Viszonylag kevés funkcióval rendelkezik, és nem valószínű, hogy továbbiakkal bővül. Például nincsenek implicit numerikus konverziók, nincsenek konstruktorok vagy destruktorok, nincs operátor-túlterhelés, nincsenek alapértelmezett paraméterértékek, nincs öröklés, nincs generika, nincsenek kivételek, nincsenek makrók, nincsenek függvényjegyzetek és nincs szál-lokális tárolás.
 A nyelv kiforrott és stabil, és garantálja a visszafelé kompatibilitást: a régebbi Go programok lefordíthatók és futtathatók a fordítóprogramok és szabványos könyvtárak újabb verzióival.
 
+\newpage
+
 A Go elégséges típusrendszerrel rendelkezik ahhoz, hogy elkerülje a legtöbb gondatlan hibát, amely a dinamikus nyelvek programozóit sújtja, de egyszerűbb típusrendszerrel rendelkezik, mint a hasonló tipizált nyelvek.
 Ez a megközelítés néha a ''tipizálatlan'' programozás elszigetelt zugait eredményezheti a típusok tágabb keretén belül, és a Go programozók nem mennek el olyan messzire, mint a C++ vagy a Haskell programozók, hogy a biztonsági tulajdonságokat típusalapú bizonyításként fejezzék ki.
 A gyakorlatban azonban a Go a programozóknak a viszonylag erős típusrendszerek biztonsági és futásidőbeli teljesítménybeli előnyeinek nagy részét biztosítja, anélkül, hogy egy összetett típusrendszer terhei terhelnék őket.
@@ -65,6 +67,8 @@ Ez szinte elég ahhoz, hogy meggyőzzük a programozókat arról, hogy a hatéko
 A Go tesztelési megközelítése ehhez képest meglehetősen alacsony technológiai színvonalúnak tűnhet.
 Egyetlen parancsra támaszkodik, a go test , és egy sor konvencióra a tesztfüggvények írásához, amelyeket a go test képes lefuttatni.
 A viszonylag könnyű mechanizmus hatékony a tiszta teszteléshez, és természetesen kiterjeszthető a benchmarkokra és a dokumentációhoz szükséges szisztematikus példákra.
+
+\newpage
 
 A gyakorlatban a tesztkód írása nem sokban különbözik az eredeti program írásától. Rövid függvényeket írunk, amelyek a feladat egy részére összpontosítanak.
 Vigyáznunk kell a peremfeltételekre, gondolkodnunk kell az adatszerkezeteken, és érvelnünk kell, hogy a megfelelő bemenetekből milyen eredményeket kell produkálnia a számításnak. De ez ugyanaz a folyamat, mint a közönséges Go kód írása; nem kell új jelöléseket, konvenciókat és eszközöket használni hozzá.
